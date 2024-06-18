@@ -1,0 +1,121 @@
+<div class="modal fade" id="modalUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalUsuariosLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalUsuariosLabel">{{ agregarModificarUsuario }} usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- <form class="row g-3 needs-validation" novalidate>
+            <div class="col-md-12">
+              <label for="validationCustom01" class="form-label">Código</label>
+              <input type="text" class="form-control" id="validationCustom01" [(ngModel)]="codigo" />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="col-md-12">
+              <label for="validationCustom02" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="validationCustom02" [(ngModel)]="nombre" />
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked />
+                <label class="form-check-label" for="flexSwitchCheckChecked">Activo</label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <mat-form-field>
+                <mat-label>Código</mat-label>
+                <input matInput placeholder="A001" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Banco de Chile" />
+              </mat-form-field>
+            </div>
+            <p><mat-slide-toggle [(ngModel)]="isChecked">Slide me!</mat-slide-toggle></p>
+            <p><mat-slide-toggle labelPosition="before">...and slide me too!</mat-slide-toggle></p>
+            <mat-slide-toggle [(ngModel)]="isChecked">Slide Toggle Checked: {{ isChecked }}</mat-slide-toggle>
+          </form> -->
+
+        <!-- <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control is-invalid" placeholder="Ingresa Contraseña" formControlName="password" />
+          </div> -->
+        <!-- [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }"  -->
+
+        <!-- <div class="example-container">
+            <mat-form-field>
+              <mat-label>Código</mat-label>
+              <input matInput placeholder="pat@example.com" [formControl]="email" />
+              @if (email.invalid) {
+              <mat-error>{{ errorMessage() }}</mat-error>
+              }
+            </mat-form-field>
+          </div> -->
+
+        <!-- <form class="example-form">
+            <mat-form-field class="example-full-width">
+              <mat-label>Email</mat-label>
+              <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" placeholder="Ex. pat@example.com" />
+              <mat-hint>Errors appear instantly!</mat-hint>
+              @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (emailFormControl.hasError('required')) {
+              <mat-error>Email is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </form> -->
+
+        <form [formGroup]="formUsuarios" class="row g-3">
+          <div class="col-md-12">
+            <!-- <mat-form-field>
+                <mat-label>Código</mat-label>
+                <input type="text" matInput formControlName="codigo" placeholder="A001" />
+                @if (hasError('codigo','required') || hasError('codigo','minlength')){
+                <mat-error>Ingresa un código válido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="nombre" placeholder="Banco de Chile" />
+                @if (hasError('nombre','required') || hasError('nombre','minlength')){
+                <mat-error>Ingresa un nombre válido</mat-error>
+                } 
+              </mat-form-field>-->
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="aceptar($event)">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalUsuariosEliminar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalUsuariosEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalUsuariosEliminarLabel"><i class="bi bi-exclamation-triangle"></i> Eliminar usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          ¿Estás seguro que deseas eliminar el usuario <strong>{{ nombreUsuario }}</strong
+          >?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button " class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button " class="btn btn-primary" (click)="aceptar($event)">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
