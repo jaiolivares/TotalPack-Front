@@ -1,8 +1,9 @@
 import { Component, OnInit, inject } from "@angular/core";
-import { UsuariosModalComponent } from "./usuarios-modal/usuarios-modal.component";
-import { IUsers } from "../../models/users";
-import { UsersService } from "../../services/users.service";
 import { CommonModule } from "@angular/common";
+
+import { UsuariosModalComponent } from "./usuarios-modal/usuarios-modal.component";
+import { UsersService } from "../../services/users.service";
+import { IUsers } from "../../models/users";
 
 @Component({
   selector: "app-usuarios",
@@ -12,23 +13,36 @@ import { CommonModule } from "@angular/common";
   styleUrl: "./usuarios.component.css",
 })
 export class UsuariosComponent implements OnInit {
+  private _usersService = inject(UsersService);
+
   loading: boolean = true;
   usersList: IUsers[] = [];
   agregarModificar: string = "";
-
-  private _usersService = inject(UsersService);
+  idUsuario: string = "";
+  nombreUsuario: string = "";
 
   ngOnInit(): void {
-    this._usersService.getUsers().subscribe((data: IUsers[]) => {
-      this.usersList = data;
-      this.loading = false;
-      console.log(data);
-    });
+    this.funListarUsuarios();
   }
 
   setAgregarModificar(agregaModifica: string) {
     this.agregarModificar = agregaModifica;
   }
 
-  funEliminar(): void {}
+  funListarUsuarios() {
+    this._usersService.getUsers().subscribe((data: IUsers[]) => {
+      this.usersList = data;
+      this.loading = false;
+    });
+  }
+
+  funEliminar(id: string, nombre: string): void {
+    this.idUsuario = id;
+    this.nombreUsuario = nombre;
+  }
+
+  funUsuarioEliminado(): void {
+    this.loading = true;
+    this.funListarUsuarios();
+  }
 }

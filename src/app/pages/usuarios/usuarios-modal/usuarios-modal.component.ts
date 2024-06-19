@@ -1,8 +1,9 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 import { FuncHasError } from "../../../shared/utils";
+import { UsersService } from "../../../services/users.service";
 
 @Component({
   selector: "app-usuarios-modal",
@@ -12,12 +13,16 @@ import { FuncHasError } from "../../../shared/utils";
   styleUrl: "./usuarios-modal.component.css",
 })
 export class UsuariosModalComponent {
-  @Input() agregarModificarUsuario: string = "";
+  private _usersService = inject(UsersService);
 
-  codigo: string = "";
-  nombre: string = "";
-  nombreUsuario: string = "aaaa";
-  //isChecked: boolean = true;
+  @Input() agregarModificarUsuario: string = "";
+  @Input() idUsuario: string = "";
+  @Input() nombreUsuario: string = "";
+
+  @Output() funUsuarioEliminado = new EventEmitter<void>();
+
+  // codigo: string = "";
+  // nombre: string = "";
 
   formUsuarios: FormGroup;
 
@@ -28,15 +33,15 @@ export class UsuariosModalComponent {
     });
   }
 
-  hasError(controlName: string, errorType: string) {
-    return FuncHasError(this.formUsuarios, controlName, errorType);
-  }
+  // hasError(controlName: string, errorType: string) {
+  //   return FuncHasError(this.formUsuarios, controlName, errorType);
+  // }
 
-  aceptar(e: Event): void {
-    e.preventDefault();
-    console.log("xxx");
-    console.log(this.formUsuarios);
+  funAceptar(): void {}
 
-    //const modal = document.getElementById("modalBancos");
+  funAceptarEliminar(): void {
+    this._usersService.deleteUser(this.idUsuario).subscribe((data: any) => {
+      this.funUsuarioEliminado.emit();
+    });
   }
 }

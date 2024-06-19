@@ -1,8 +1,6 @@
 @if(loading){
 <h3>Cargando lista de Usuarios...</h3>
 } @if(!loading){
-
-<!-- <div> -->
 <div class="d-flex align-items-md-center justify-content-between">
   <h3>Administrador de usuarios</h3>
   <div class="input-group">
@@ -29,8 +27,8 @@
       <td>{{ user.email }}</td>
       <td>???</td>
       <td>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuariosEliminar" (click)="funEliminar()"><i class="bi bi-x-lg"></i></button>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Modificar')"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-danger btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuariosEliminar" (click)="funEliminar(user.id, user.fullName)"><i class="bi bi-x-lg"></i></button>
+        <button type="button" class="btn btn-outline-info btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Modificar')"><i class="bi bi-pencil"></i></button>
       </td>
     </tr>
     }
@@ -49,7 +47,6 @@
     </li>
   </ul>
 </nav>
-<!-- </div> -->
 
-<app-usuarios-modal [agregarModificarUsuario]="agregarModificar" />
+<app-usuarios-modal [agregarModificarUsuario]="agregarModificar" [idUsuario]="idUsuario" [nombreUsuario]="nombreUsuario" (funUsuarioEliminado)="funUsuarioEliminado()" />
 }

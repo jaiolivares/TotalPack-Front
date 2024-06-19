@@ -1,3 +1,7 @@
 div > .input-group {
   width: 30%;
 }
+
+.btn-opciones {
+  margin-inline: 2px;
+}
