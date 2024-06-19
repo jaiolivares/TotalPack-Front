@@ -9,11 +9,9 @@ import { IUsers } from "../models/users";
 })
 export class UsersService {
   private _http = inject(HttpClient);
-  private urlApi: string = "https://localhost:7073/api/";
-  //private urlApi: string = "https://fakestoreapi.com/products/";
+  private urlApi: string = "https://localhost:7073/api";
 
   getUsers(): Observable<IUsers[]> {
-    //return this._http.get<IUsers[]>(this.urlApi + "/User");
-    return this._http.get<IUsers[]>(this.urlApi);
+    return this._http.get<IUsers[]>(this.urlApi + "/User");
   }
 }

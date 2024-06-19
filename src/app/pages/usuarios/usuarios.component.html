@@ -22,16 +22,18 @@
     </tr>
   </thead>
   <tbody>
+    @for (user of usersList; track $index){
     <tr>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>Otto</td>
-      <td>Otto</td>
+      <td>{{ user.fullName }}</td>
+      <td>{{ user.birth | date : "dd/MM/yyyy" }}</td>
+      <td>{{ user.email }}</td>
+      <td>???</td>
       <td>
         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuariosEliminar" (click)="funEliminar()"><i class="bi bi-x-lg"></i></button>
         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Modificar')"><i class="bi bi-pencil"></i></button>
       </td>
     </tr>
+    }
   </tbody>
 </table>
 <nav aria-label="Page navigation example">
