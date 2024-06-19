@@ -6,88 +6,49 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- <form class="row g-3 needs-validation" novalidate>
-            <div class="col-md-12">
-              <label for="validationCustom01" class="form-label">Código</label>
-              <input type="text" class="form-control" id="validationCustom01" [(ngModel)]="codigo" />
-              <div class="valid-feedback">Looks good!</div>
+        <form [formGroup]="formUsuarios" id="formUsuarios" class="row g-3 needs-validation" novalidate>
+          <div class="col-12">
+            <label for="nombre">Nombre Completo</label>
+            <input
+              type="text"
+              id="nombre"
+              [ngClass]="{ 'is-invalid': hasError('nombre', 'required') || hasError('nombre', 'minlength') || hasError('nombre', 'pattern') }"
+              class="form-control"
+              placeholder="Javier Olivares Zavala"
+              formControlName="nombre"
+              maxlength="50"
+              [(ngModel)]="nombre"
+              (blur)="eliminarEspacios('nombre')"
+            />
+            <div class="text-danger" *ngIf="hasError('nombre', 'required')">Ingresa el nombre</div>
+            <div class="text-danger" *ngIf="hasError('nombre', 'minlength')">Cantidad mínima de caracteres incorrecta</div>
+            <div class="text-danger" *ngIf="hasError('nombre', 'pattern')">El nombre solo debe contener letras</div>
+          </div>
+          <div class="col-12">
+            <label for="fechaNacimiento">Fecha Nacimiento</label>
+            <div class="input-group">
+              <input id="fecha" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
             </div>
-            <div class="col-md-12">
-              <label for="validationCustom02" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="validationCustom02" [(ngModel)]="nombre" />
-              <div class="valid-feedback">Looks good!</div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked />
-                <label class="form-check-label" for="flexSwitchCheckChecked">Activo</label>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>Código</mat-label>
-                <input matInput placeholder="A001" />
-              </mat-form-field>
-            </div>
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>Nombre</mat-label>
-                <input matInput placeholder="Banco de Chile" />
-              </mat-form-field>
-            </div>
-            <p><mat-slide-toggle [(ngModel)]="isChecked">Slide me!</mat-slide-toggle></p>
-            <p><mat-slide-toggle labelPosition="before">...and slide me too!</mat-slide-toggle></p>
-            <mat-slide-toggle [(ngModel)]="isChecked">Slide Toggle Checked: {{ isChecked }}</mat-slide-toggle>
-          </form> -->
-
-        <!-- <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" class="form-control is-invalid" placeholder="Ingresa Contraseña" formControlName="password" />
-          </div> -->
-        <!-- [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }"  -->
-
-        <!-- <div class="example-container">
-            <mat-form-field>
-              <mat-label>Código</mat-label>
-              <input matInput placeholder="pat@example.com" [formControl]="email" />
-              @if (email.invalid) {
-              <mat-error>{{ errorMessage() }}</mat-error>
-              }
-            </mat-form-field>
-          </div> -->
-
-        <!-- <form class="example-form">
-            <mat-form-field class="example-full-width">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" placeholder="Ex. pat@example.com" />
-              <mat-hint>Errors appear instantly!</mat-hint>
-              @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-              <mat-error>Please enter a valid email address</mat-error>
-              } @if (emailFormControl.hasError('required')) {
-              <mat-error>Email is <strong>required</strong></mat-error>
-              }
-            </mat-form-field>
-          </form> -->
-
-        <form [formGroup]="formUsuarios" class="row g-3">
-          <div class="col-md-12">
-            <!-- <mat-form-field>
-                <mat-label>Código</mat-label>
-                <input type="text" matInput formControlName="codigo" placeholder="A001" />
-                @if (hasError('codigo','required') || hasError('codigo','minlength')){
-                <mat-error>Ingresa un código válido</mat-error>
-                }
-              </mat-form-field>
-            </div>
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>Nombre</mat-label>
-                <input type="text" matInput formControlName="nombre" placeholder="Banco de Chile" />
-                @if (hasError('nombre','required') || hasError('nombre','minlength')){
-                <mat-error>Ingresa un nombre válido</mat-error>
-                } 
-              </mat-form-field>-->
+            <input type="password" [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }" class="form-control" placeholder="Ingresa Contraseña" formControlName="password" />
+            <div class="text-danger" *ngIf="hasError('password', 'required')">Ingresa la contraseña</div>
+            <div class="text-danger" *ngIf="hasError('password', 'minlength')">Formato de contraseña inválido</div>
+          </div>
+          <div class="col-12">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="emails"
+              [ngClass]="{ 'is-invalid': hasError('email', 'required') || hasError('email', 'email') }"
+              class="form-control"
+              placeholder="javier.olivares.zavala@gmail.com"
+              maxlength="100"
+              [(ngModel)]="email"
+              formControlName="email"
+              (blur)="eliminarEspacios('email')"
+            />
+            <div class="text-danger" *ngIf="hasError('email', 'required')">Ingresa el email</div>
+            <div class="text-danger" *ngIf="hasError('email', 'email')">Formato de email inválido</div>
           </div>
         </form>
       </div>

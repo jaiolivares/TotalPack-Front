@@ -5,10 +5,12 @@ import { CommonModule } from "@angular/common";
 import { FuncHasError } from "../../../shared/utils";
 import { UsersService } from "../../../services/users.service";
 
+import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+
 @Component({
   selector: "app-usuarios-modal",
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, NgbDatepickerModule],
   templateUrl: "./usuarios-modal.component.html",
   styleUrl: "./usuarios-modal.component.css",
 })
@@ -21,23 +23,40 @@ export class UsuariosModalComponent {
 
   @Output() funUsuarioEliminado = new EventEmitter<void>();
 
-  // codigo: string = "";
-  // nombre: string = "";
+  nombre: string = "";
+  email: string = "";
+  fecha: string = "";
 
   formUsuarios: FormGroup;
 
+  model?: NgbDateStruct;
+
   constructor(private form: FormBuilder) {
     this.formUsuarios = this.form.group({
-      codigo: ["", [Validators.required, Validators.minLength(3)]],
-      nombre: ["", [Validators.required, Validators.minLength(3)]],
+      nombre: ["", [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z ]+$/)]],
+      email: ["", [Validators.required, Validators.email]],
+      fecha: [],
     });
   }
 
-  // hasError(controlName: string, errorType: string) {
-  //   return FuncHasError(this.formUsuarios, controlName, errorType);
-  // }
+  hasError(controlName: string, errorType: string) {
+    return FuncHasError(this.formUsuarios, controlName, errorType);
+  }
 
-  funAceptar(): void {}
+  eliminarEspacios(inputText: string) {
+    switch (inputText) {
+      case "nombre":
+        this.nombre = this.nombre.trim();
+        break;
+      case "email":
+        this.email = this.email.trim();
+        break;
+    }
+  }
+
+  funAceptar(): void {
+    console.log(this.formUsuarios);
+  }
 
   funAceptarEliminar(): void {
     this._usersService.deleteUser(this.idUsuario).subscribe((data: any) => {
