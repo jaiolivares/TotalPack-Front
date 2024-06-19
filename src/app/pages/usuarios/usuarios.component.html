@@ -25,7 +25,7 @@
       <td>{{ user.fullName }}</td>
       <td>{{ user.birth | date : "dd/MM/yyyy" }}</td>
       <td>{{ user.email }}</td>
-      <td>???</td>
+      <td>{{ user.street }}</td>
       <td>
         <button type="button" class="btn btn-outline-danger btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuariosEliminar" (click)="funEliminar(user.id, user.fullName)"><i class="bi bi-x-lg"></i></button>
         <button type="button" class="btn btn-outline-info btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Modificar')"><i class="bi bi-pencil"></i></button>

@@ -6,54 +6,89 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="formUsuarios" id="formUsuarios" class="row g-3 needs-validation" novalidate>
-          <div class="col-12">
-            <label for="nombre">Nombre Completo</label>
-            <input
-              type="text"
-              id="nombre"
-              [ngClass]="{ 'is-invalid': hasError('nombre', 'required') || hasError('nombre', 'minlength') || hasError('nombre', 'pattern') }"
-              class="form-control"
-              placeholder="Javier Olivares Zavala"
-              formControlName="nombre"
-              maxlength="50"
-              [(ngModel)]="nombre"
-              (blur)="eliminarEspacios('nombre')"
-            />
-            <div class="text-danger" *ngIf="hasError('nombre', 'required')">Ingresa el nombre</div>
-            <div class="text-danger" *ngIf="hasError('nombre', 'minlength')">Cantidad mínima de caracteres incorrecta</div>
-            <div class="text-danger" *ngIf="hasError('nombre', 'pattern')">El nombre solo debe contener letras</div>
-          </div>
-          <div class="col-12">
-            <label for="fechaNacimiento">Fecha Nacimiento</label>
-            <div class="input-group">
-              <input id="fecha" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+        <div class="card">
+          <form [formGroup]="formUsuarios" id="formUsuarios" class="row g-3 needs-validation" novalidate>
+            <div class="col-12">
+              <label for="nombre">Nombre Completo</label>
+              <input
+                type="text"
+                id="nombre"
+                [ngClass]="{ 'is-invalid': hasError('nombre', 'required') || hasError('nombre', 'minlength') || hasError('nombre', 'pattern') }"
+                class="form-control"
+                placeholder="Javier Olivares Zavala"
+                formControlName="nombre"
+                maxlength="50"
+                [(ngModel)]="nombre"
+                (blur)="eliminarEspacios('nombre')"
+              />
+              <div class="text-danger" *ngIf="hasError('nombre', 'required')">Ingresa el nombre</div>
+              <div class="text-danger" *ngIf="hasError('nombre', 'minlength')">Cantidad mínima de caracteres incorrecta</div>
+              <div class="text-danger" *ngIf="hasError('nombre', 'pattern')">El nombre solo debe contener letras</div>
             </div>
-            <input type="password" [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }" class="form-control" placeholder="Ingresa Contraseña" formControlName="password" />
+            <div class="col-12">
+              <label for="fechaNacimiento">Fecha Nacimiento</label>
+              <div class="input-group">
+                <input id="fecha" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+              </div>
+              <!-- <input type="password" [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }" class="form-control" placeholder="Ingresa Contraseña" formControlName="password" />
             <div class="text-danger" *ngIf="hasError('password', 'required')">Ingresa la contraseña</div>
-            <div class="text-danger" *ngIf="hasError('password', 'minlength')">Formato de contraseña inválido</div>
+            <div class="text-danger" *ngIf="hasError('password', 'minlength')">Formato de contraseña inválido</div> -->
+            </div>
+            <div class="col-12">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="emails"
+                [ngClass]="{ 'is-invalid': hasError('email', 'required') || hasError('email', 'email') }"
+                class="form-control"
+                placeholder="javier.olivares.zavala@gmail.com"
+                formControlName="email"
+                maxlength="100"
+                [(ngModel)]="email"
+                (blur)="eliminarEspacios('email')"
+              />
+              <div class="text-danger" *ngIf="hasError('email', 'required')">Ingresa el email</div>
+              <div class="text-danger" *ngIf="hasError('email', 'email')">Formato de email inválido</div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Direcciones del usuario</div>
+          <div class="mt-sm-4">
+            <div class="col-12 d-flex">
+              <input type="text" class="form-control" placeholder="Avenida Pajaritos 1234" maxlength="100" [(ngModel)]="nuevaDireccion" />
+              <button type="button" class="btn btn-success" (click)="funAgregarDireccion()">Añadir</button>
+            </div>
+            <table class="table table-hover mt-sm-4">
+              <thead>
+                <tr>
+                  <th scope="col">Direcciones</th>
+                  <th scope="col">Principal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if(adressesList.length === 0){
+                <p>No has ingresado direcciones</p>
+                } @for (adress of adressesList; track $index){
+                <tr>
+                  <td>{{ adress.street }}</td>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{ adress.idAdress }}" [checked]="adress.principal" (click)="funCambiarDireccionPrincipal(adress.idAdress)" />
+                      <!-- <label class="form-check-label" for="flexRadioDefault2"> Default checked radio </label> -->
+                    </div>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
           </div>
-          <div class="col-12">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="emails"
-              [ngClass]="{ 'is-invalid': hasError('email', 'required') || hasError('email', 'email') }"
-              class="form-control"
-              placeholder="javier.olivares.zavala@gmail.com"
-              maxlength="100"
-              [(ngModel)]="email"
-              formControlName="email"
-              (blur)="eliminarEspacios('email')"
-            />
-            <div class="text-danger" *ngIf="hasError('email', 'required')">Ingresa el email</div>
-            <div class="text-danger" *ngIf="hasError('email', 'email')">Formato de email inválido</div>
-          </div>
-        </form>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="funCancelar()">Cancelar</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="funAceptar()">Aceptar</button>
       </div>
     </div>
