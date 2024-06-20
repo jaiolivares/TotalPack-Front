@@ -28,7 +28,7 @@
             <div class="col-12">
               <label for="fecha">Fecha Nacimiento</label>
               <div class="input-group">
-                <input tyoe="text" id="fecha" [ngClass]="{ 'is-invalid': hasError('fecha', 'required') }" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
+                <input type="text" id="fecha" [ngClass]="{ 'is-invalid': hasError('fecha', 'required') }" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
               </div>
               <div class="text-danger" *ngIf="hasError('fecha', 'required')">Ingresa la fecha</div>
@@ -89,7 +89,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="funCancelar()">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="funAceptar()">Aceptar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="formUsuarios.invalid" (click)="funAceptar()">Aceptar</button>
       </div>
     </div>
   </div>
@@ -109,7 +109,7 @@
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="funCancelarEliminar()">Cancelar</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="funAceptarEliminar()">Aceptar</button>
       </div>
     </div>

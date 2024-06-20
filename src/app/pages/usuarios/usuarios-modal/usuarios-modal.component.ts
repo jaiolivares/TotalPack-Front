@@ -56,7 +56,12 @@ export class UsuariosModalComponent implements OnInit, OnChanges {
     this.nombre = this.nombreUsuario;
     this.email = this.emailUsuario;
     const splitFecha = this.fechaNacimiento.split("-");
-    this.fecha = { year: parseInt(splitFecha[0]), month: parseInt(splitFecha[1]), day: parseInt(splitFecha[2].substring(0, 2)) };
+
+    if (splitFecha.length > 1) {
+      this.fecha = { year: parseInt(splitFecha[0]), month: parseInt(splitFecha[1]), day: parseInt(splitFecha[2].substring(0, 2)) };
+    } else {
+      this.fecha = { year: 1987, month: 10, day: 14 };
+    }
 
     if (changes["idUsuario"] && changes["idUsuario"].currentValue) {
       this.funListarDirecciones(this.idUsuario);
@@ -178,6 +183,10 @@ export class UsuariosModalComponent implements OnInit, OnChanges {
         this.funResetForm();
       });
     });
+  }
+
+  funCancelarEliminar(): void {
+    this.funResetForm();
   }
 
   funResetForm(): void {
