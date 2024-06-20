@@ -1,4 +1,4 @@
-export interface IAdresses {
+export interface IAdress {
   idAdress: number;
   idUser: string;
   street: string;

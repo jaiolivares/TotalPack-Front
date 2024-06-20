@@ -5,7 +5,7 @@
   <h3>Administrador de usuarios</h3>
   <div class="input-group">
     <span class="input-group-text"><i class="bi bi-search"></i></span>
-    <input type="text" class="form-control" placeholder="Buscar" />
+    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="busquedaText" />
   </div>
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Agregar')">Nuevo</button>
 </div>
@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (user of usersList; track $index){
+    @for (user of filtroUsersList; track $index){
     <tr>
       <td>{{ user.fullName }}</td>
       <td>{{ user.birth | date : "dd/MM/yyyy" }}</td>
@@ -28,7 +28,7 @@
       <td>{{ user.street }}</td>
       <td>
         <button type="button" class="btn btn-outline-danger btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuariosEliminar" (click)="funEliminar(user.id, user.fullName)"><i class="bi bi-x-lg"></i></button>
-        <button type="button" class="btn btn-outline-info btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="setAgregarModificar('Modificar')"><i class="bi bi-pencil"></i></button>
+        <button type="button" class="btn btn-outline-info btn-opciones" data-bs-toggle="modal" data-bs-target="#modalUsuarios" (click)="funModificar(user.id)"><i class="bi bi-pencil"></i></button>
       </td>
     </tr>
     }
@@ -48,5 +48,5 @@
   </ul>
 </nav>
 
-<app-usuarios-modal [agregarModificarUsuario]="agregarModificar" [idUsuario]="idUsuario" [nombreUsuario]="nombreUsuario" (funUsuarioEliminado)="funUsuarioEliminado()" />
+<app-usuarios-modal [agregarModificarUsuario]="agregarModificar" [idUsuario]="idUsuario" [nombreUsuario]="nombreUsuario" (funConfirmacionModal)="funConfirmacionModal()" />
 }

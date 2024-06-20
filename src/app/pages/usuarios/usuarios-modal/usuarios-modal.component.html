@@ -26,14 +26,12 @@
               <div class="text-danger" *ngIf="hasError('nombre', 'pattern')">El nombre solo debe contener letras</div>
             </div>
             <div class="col-12">
-              <label for="fechaNacimiento">Fecha Nacimiento</label>
+              <label for="fecha">Fecha Nacimiento</label>
               <div class="input-group">
-                <input id="fecha" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
+                <input tyoe="text" id="fecha" [ngClass]="{ 'is-invalid': hasError('fecha', 'required') }" class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha" [(ngModel)]="fecha" name="dp" ngbDatepicker #d="ngbDatepicker" />
                 <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
               </div>
-              <!-- <input type="password" [ngClass]="{ 'is-invalid': hasError('password', 'required') || hasError('password', 'minlength') }" class="form-control" placeholder="Ingresa Contraseña" formControlName="password" />
-            <div class="text-danger" *ngIf="hasError('password', 'required')">Ingresa la contraseña</div>
-            <div class="text-danger" *ngIf="hasError('password', 'minlength')">Formato de contraseña inválido</div> -->
+              <div class="text-danger" *ngIf="hasError('fecha', 'required')">Ingresa la fecha</div>
             </div>
             <div class="col-12">
               <label for="email">Email</label>
@@ -60,9 +58,6 @@
             <div class="col-12 d-flex">
               <input type="text" class="form-control" placeholder="Avenida Pajaritos 1234" maxlength="100" [(ngModel)]="nuevaDireccion" />
               <button type="button" class="btn btn-success" (click)="funAgregarDireccion()">Añadir</button>
-              <!-- @if (errorDireccionRepetida){
-              <div class="text-danger">La dirección que está ingresado ya existe</div>
-              } -->
             </div>
             <div class="col-12 d-flex">
               <div class="text-danger" *ngIf="esDireccionRepetida">La dirección que está ingresado ya existe</div>
@@ -83,7 +78,6 @@
                   <td>
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{ adress.idAdress }}" [checked]="adress.principal" (click)="funCambiarDireccionPrincipal(adress.idAdress)" />
-                      <!-- <label class="form-check-label" for="flexRadioDefault2"> Default checked radio </label> -->
                     </div>
                   </td>
                 </tr>
