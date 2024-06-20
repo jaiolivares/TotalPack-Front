@@ -26,13 +26,13 @@ export class UsuariosModalComponent implements OnInit {
 
   @Output() funUsuarioEliminado = new EventEmitter<void>();
 
-  loading: boolean = true;
-  adressesList: IAdresses[] = [];
   nombre: string = "";
   email: string = "";
   fecha: string = "";
+  adressesList: IAdresses[] = [];
   nuevaDireccion: string = "";
   idTemporalDireccion: number = 10000;
+  esDireccionRepetida: boolean = false;
 
   formUsuarios: FormGroup;
 
@@ -68,23 +68,25 @@ export class UsuariosModalComponent implements OnInit {
   }
 
   funListarDirecciones(idUsuario: string) {
-    //idUsuario = "3F6CF2C0-D0A1-476B-B855-4860113BD20C";
+    idUsuario = "3F6CF2C0-D0A1-476B-B855-4860113BD20C";
     if (idUsuario != "") {
       this._adressesService.getAdresses(idUsuario).subscribe((data: IAdresses[]) => {
         this.adressesList = data;
-        this.loading = false;
       });
     }
   }
 
   funAgregarDireccion(): void {
-    this.adressesList.forEach((x) => {
-      x.principal = false;
-    });
-    this.idTemporalDireccion++;
-    this.adressesList.push({ idAdress: this.idTemporalDireccion, idUser: this.idUsuario, street: this.nuevaDireccion, principal: true });
-    this.nuevaDireccion = "";
-    console.log(this.adressesList);
+    if (this.nuevaDireccion.trim() !== "") {
+      if (!this.funEsDireccionRepetida()) {
+        this.adressesList.forEach((x) => {
+          x.principal = false;
+        });
+        this.idTemporalDireccion++;
+        this.adressesList.push({ idAdress: this.idTemporalDireccion, idUser: this.idUsuario, street: this.nuevaDireccion.trim(), principal: true });
+        this.nuevaDireccion = "";
+      }
+    }
   }
 
   funCambiarDireccionPrincipal(idAdress: number) {
@@ -93,22 +95,44 @@ export class UsuariosModalComponent implements OnInit {
     });
   }
 
+  funEsDireccionRepetida(): boolean {
+    if (this.adressesList.length == 0) {
+      this.esDireccionRepetida = false;
+    }
+    const index = this.adressesList.findIndex((x) => {
+      if (x.street.trim().toLowerCase() === this.nuevaDireccion.trim().toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+
+    this.esDireccionRepetida = index >= 0;
+
+    return this.esDireccionRepetida;
+  }
+
   funAceptar(): void {
     console.log(this.formUsuarios);
-    this.nombre = "";
-    this.email = "";
-    this.fecha = "";
+    this.funResetForm();
   }
 
   funCancelar(): void {
-    this.nombre = "";
-    this.email = "";
-    this.fecha = "";
+    this.funResetForm();
   }
 
   funAceptarEliminar(): void {
     this._usersService.deleteUser(this.idUsuario).subscribe((data: any) => {
       this.funUsuarioEliminado.emit();
     });
+  }
+
+  funResetForm(): void {
+    this.nombre = "";
+    this.email = "";
+    this.fecha = "";
+    this.adressesList = [];
+    this.nuevaDireccion = "";
+    this.idTemporalDireccion = 10000;
+    this.esDireccionRepetida = false;
   }
 }

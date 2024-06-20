@@ -60,6 +60,12 @@
             <div class="col-12 d-flex">
               <input type="text" class="form-control" placeholder="Avenida Pajaritos 1234" maxlength="100" [(ngModel)]="nuevaDireccion" />
               <button type="button" class="btn btn-success" (click)="funAgregarDireccion()">Añadir</button>
+              <!-- @if (errorDireccionRepetida){
+              <div class="text-danger">La dirección que está ingresado ya existe</div>
+              } -->
+            </div>
+            <div class="col-12 d-flex">
+              <div class="text-danger" *ngIf="esDireccionRepetida">La dirección que está ingresado ya existe</div>
             </div>
             <table class="table table-hover mt-sm-4">
               <thead>
