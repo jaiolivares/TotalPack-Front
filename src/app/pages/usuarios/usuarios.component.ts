@@ -17,10 +17,13 @@ export class UsuariosComponent implements OnInit {
   private _usersService = inject(UsersService);
 
   loading: boolean = true;
+  paginaActual: number = 1;
   usersList: IUser[] = [];
   agregarModificar: string = "";
   idUsuario: string = "";
   nombreUsuario: string = "";
+  emailUsuario: string = "";
+  fechaNacimiento: string = "";
   busquedaText: string = "";
 
   get filtroUsersList() {
@@ -36,7 +39,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   funListarUsuarios() {
-    this._usersService.getUsers().subscribe((data: IUser[]) => {
+    this._usersService.getUsers(this.paginaActual).subscribe((data: IUser[]) => {
       this.usersList = data;
       this.loading = false;
     });
@@ -47,13 +50,21 @@ export class UsuariosComponent implements OnInit {
     this.nombreUsuario = nombre;
   }
 
-  funModificar(id: string): void {
+  funModificar(id: string, nombre: string, email: string, fecha: Date | string): void {
     this.setAgregarModificar("Modificar");
     this.idUsuario = id;
+    this.nombreUsuario = nombre;
+    this.emailUsuario = email;
+    this.fechaNacimiento = fecha.toString().replaceAll("/", "-");
   }
 
   funConfirmacionModal(): void {
     this.loading = true;
+    this.funListarUsuarios();
+  }
+
+  funPaginacion(hoja: number) {
+    this.paginaActual = hoja;
     this.funListarUsuarios();
   }
 }

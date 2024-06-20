@@ -22,8 +22,8 @@ export class UsersService {
     return this._http.post(`${this.urlApi}/User`, usuario, this.httpOptions);
   }
 
-  getUsers(): Observable<IUser[]> {
-    return this._http.get<IUser[]>(`${this.urlApi}/User`);
+  getUsers(hoja: number): Observable<IUser[]> {
+    return this._http.get<IUser[]>(`${this.urlApi}/User/Page?pageNumber=${hoja}`);
   }
 
   deleteUser(id: string): Observable<void> {

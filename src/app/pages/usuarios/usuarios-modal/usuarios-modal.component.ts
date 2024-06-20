@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from "@angular/core";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NgbDatepickerModule } from "@ng-bootstrap/ng-bootstrap";
 import { Guid } from "guid-typescript";
@@ -17,11 +17,7 @@ import { IUser } from "../../../models/user";
   templateUrl: "./usuarios-modal.component.html",
   styleUrl: "./usuarios-modal.component.css",
 })
-export class UsuariosModalComponent implements OnInit, AfterViewInit {
-  @ViewChild("modalUsuarios") modalElement!: ElementRef;
-  @ViewChild("formUsuarios") myForm!: NgForm;
-  // private modalInstance!: Modal;
-
+export class UsuariosModalComponent implements OnInit, OnChanges {
   private _usersService = inject(UsersService);
   private _adressesService = inject(AdressesService);
   private cdr = inject(ChangeDetectorRef);
@@ -29,6 +25,8 @@ export class UsuariosModalComponent implements OnInit, AfterViewInit {
   @Input() agregarModificarUsuario: string = "";
   @Input() idUsuario: string = "";
   @Input() nombreUsuario: string = "";
+  @Input() emailUsuario: string = "";
+  @Input() fechaNacimiento: string = "";
 
   @Output() funConfirmacionModal = new EventEmitter<void>();
 
@@ -42,13 +40,6 @@ export class UsuariosModalComponent implements OnInit, AfterViewInit {
 
   formUsuarios: FormGroup;
 
-  ngAfterViewInit() {
-    // this.modalInstance = new Modal(this.modalElement.nativeElement);
-    // this.modalElement.nativeElement.addEventListener("hidden.bs.modal", () => {
-    //   console.log("cierra modal");
-    // });
-  }
-
   constructor(private form: FormBuilder) {
     this.formUsuarios = this.form.group({
       nombre: ["", [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z ]+$/)]],
@@ -58,9 +49,18 @@ export class UsuariosModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log("xx" + this.idUsuario);
-    console.log("zz" + this.nombreUsuario);
     this.funListarDirecciones(this.idUsuario);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.nombre = this.nombreUsuario;
+    this.email = this.emailUsuario;
+    const splitFecha = this.fechaNacimiento.split("-");
+    this.fecha = { year: parseInt(splitFecha[0]), month: parseInt(splitFecha[1]), day: parseInt(splitFecha[2].substring(0, 2)) };
+
+    if (changes["idUsuario"] && changes["idUsuario"].currentValue) {
+      this.funListarDirecciones(this.idUsuario);
+    }
   }
 
   hasError(controlName: string, errorType: string) {
@@ -79,7 +79,6 @@ export class UsuariosModalComponent implements OnInit, AfterViewInit {
   }
 
   funListarDirecciones(idUsuario: string) {
-    //idUsuario = "3F6CF2C0-D0A1-476B-B855-4860113BD20C";
     if (idUsuario != "") {
       this._adressesService.getAdresses(idUsuario).subscribe((data: IAdress[]) => {
         this.adressesList = data;
