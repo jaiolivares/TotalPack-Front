@@ -24,7 +24,7 @@ export class AdressesService {
     return this._http.get<IAdress[]>(`${this.urlApi}/Adress/ById?idUser=${idUser}`);
   }
 
-  deleteAdress(idUser: string): Observable<void> {
+  deleteAllAdress(idUser: string): Observable<void> {
     return this._http.delete<void>(`${this.urlApi}/Adress/All?idUser=${idUser}`);
   }
 }

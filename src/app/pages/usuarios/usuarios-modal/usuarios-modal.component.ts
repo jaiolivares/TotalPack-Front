@@ -119,28 +119,50 @@ export class UsuariosModalComponent implements OnInit, OnChanges {
   }
 
   funAceptar(): void {
-    this.idUsuario = Guid.create().toString();
-    const usuario: IUser = { id: this.idUsuario, fullName: this.nombre, birth: new Date(this.fecha.year, this.fecha.month - 1, this.fecha.day), email: this.email, street: "" };
-    this._usersService.insertUser(JSON.stringify(usuario)).subscribe((data: any) => {
-      //this.cdr.detectChanges();
-
-      //this.funConfirmacionModal.emit();
-
-      if (this.adressesList.length > 0) {
-        this.adressesList.forEach((x) => {
-          const direccion: IAdress = { idAdress: 0, idUser: this.idUsuario, street: x.street, principal: x.principal };
-          this._adressesService.insertAdress(JSON.stringify(direccion)).subscribe((data: any) => {
-            this.cdr.detectChanges();
-            this.funConfirmacionModal.emit();
-            //this.funResetForm();
+    if (this.agregarModificarUsuario === "Agregar") {
+      //>>AGREGAR<<
+      this.idUsuario = Guid.create().toString();
+      const usuarioAgregar: IUser = { id: this.idUsuario, fullName: this.nombre, birth: new Date(this.fecha.year, this.fecha.month - 1, this.fecha.day), email: this.email, street: "" };
+      this._usersService.insertUser(JSON.stringify(usuarioAgregar)).subscribe((data: any) => {
+        if (this.adressesList.length > 0) {
+          this.adressesList.forEach((x) => {
+            const direccion: IAdress = { idAdress: 0, idUser: this.idUsuario, street: x.street, principal: x.principal };
+            this._adressesService.insertAdress(JSON.stringify(direccion)).subscribe((data: any) => {
+              this.cdr.detectChanges();
+              this.funConfirmacionModal.emit();
+              this.funResetForm();
+            });
           });
-        });
-      } else {
+        } else {
+          this.cdr.detectChanges();
+          this.funConfirmacionModal.emit();
+          this.funResetForm();
+        }
+      });
+    } else {
+      //>>MODIFICAR<<
+      const usuarioModificar: IUser = { id: this.idUsuario, fullName: this.nombre, birth: new Date(this.fecha.year, this.fecha.month - 1, this.fecha.day), email: this.email, street: "" };
+      this._usersService.updateUser(JSON.stringify(usuarioModificar)).subscribe((data: any) => {
         this.cdr.detectChanges();
-        this.funConfirmacionModal.emit();
-        this.funResetForm();
-      }
-    });
+        if (this.adressesList.length > 0) {
+          this._adressesService.deleteAllAdress(this.idUsuario).subscribe((data: any) => {
+            this.cdr.detectChanges();
+            this.adressesList.forEach((x) => {
+              const direccion: IAdress = { idAdress: 0, idUser: this.idUsuario, street: x.street, principal: x.principal };
+              this._adressesService.insertAdress(JSON.stringify(direccion)).subscribe((data: any) => {
+                this.cdr.detectChanges();
+                this.funConfirmacionModal.emit();
+                this.funResetForm();
+              });
+            });
+          });
+        } else {
+          this.cdr.detectChanges();
+          this.funConfirmacionModal.emit();
+          this.funResetForm();
+        }
+      });
+    }
   }
 
   funCancelar(): void {
@@ -148,20 +170,25 @@ export class UsuariosModalComponent implements OnInit, OnChanges {
   }
 
   funAceptarEliminar(): void {
-    this._adressesService.deleteAdress(this.idUsuario).subscribe((data: any) => {
+    this._adressesService.deleteAllAdress(this.idUsuario).subscribe((data: any) => {
       this.cdr.detectChanges();
       this._usersService.deleteUser(this.idUsuario).subscribe((data: any) => {
         this.cdr.detectChanges();
         this.funConfirmacionModal.emit();
+        this.funResetForm();
       });
     });
   }
 
   funResetForm(): void {
-    this.formUsuarios.reset();
+    this.idUsuario = "";
+    this.nombreUsuario = "";
+    this.emailUsuario = "";
+    this.fechaNacimiento = "";
     this.adressesList = [];
     this.nuevaDireccion = "";
     this.idTemporalDireccion = 10000;
     this.esDireccionRepetida = false;
+    this.formUsuarios.reset();
   }
 }

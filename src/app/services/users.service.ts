@@ -17,13 +17,15 @@ export class UsersService {
   };
 
   insertUser(usuario: string): Observable<any> {
-    console.log("services user");
-    console.log(usuario);
     return this._http.post(`${this.urlApi}/User`, usuario, this.httpOptions);
   }
 
   getUsers(hoja: number): Observable<IUser[]> {
     return this._http.get<IUser[]>(`${this.urlApi}/User/Page?pageNumber=${hoja}`);
+  }
+
+  updateUser(usuario: string): Observable<any> {
+    return this._http.put(`${this.urlApi}/User`, usuario, this.httpOptions);
   }
 
   deleteUser(id: string): Observable<void> {
